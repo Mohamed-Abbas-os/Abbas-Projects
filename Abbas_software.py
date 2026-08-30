@@ -1,0 +1,107 @@
+from tkinter import *
+import pandas as pd
+from tkinter import messagebox
+from tkinter import ttk
+def add():
+    def save():
+        v1=entry.get()
+        v2=entry1.get()
+        v3=entry2.get()
+        v4=entry3.get()
+        if v1 and v2 and v3 and v4:
+            with open('employee_management.csv','a') as file:
+                file.write('\n')
+                file.write(v2)
+                file.write(',')
+                file.write(v1)
+                file.write(',')
+                file.write(v3)
+                file.write(',')
+                file.write(v4)
+            notify=Label(w1,text='SAVED !',bg='green',fg='white')
+            notify.place(x=100,y=180)
+            notify.after(1500,notify.place_forget)
+        else:
+            messagebox.showwarning('Missing','All fields are required')
+        entry.delete(0,END)
+        entry1.delete(0,END)
+        entry2.delete(0,END)
+        entry3.delete(0,END)
+    w1=Toplevel(root)
+    w1.title('Add employee')
+    w1.geometry('250x250')
+    entry=Entry(w1)
+    entry1=Entry(w1)
+    entry2=Entry(w1)
+    entry3=Entry(w1)
+    entry.grid(row=0,column=1,pady=5,padx=5)
+    entry1.grid(row=1,column=1,pady=5,padx=5)
+    entry2.grid(row=2,column=1,pady=5,padx=5)
+    entry3.grid(row=3,column=1,pady=5,padx=5)
+    submit=Button(w1,text='Submit',bg='blue',fg='white',command=save)
+    submit.grid(row=4,column=1,columnspan=2)
+    name=Label(w1,text='Name:')
+    name.grid(row=0,column=0,padx=10,pady=3)
+    id1=Label(w1,text='ID:')
+    id1.grid(row=1,column=0,padx=10,pady=3)
+    age=Label(w1,text='Age:')
+    age.grid(row=2,column=0,padx=10,pady=3)
+    gender=Label(w1,text='Gender:')
+    gender.grid(row=3,column=0,padx=10,pady=3)
+def view():
+    df=pd.read_csv('employee_management.csv')
+    w2=Toplevel(root)
+    w2.title('Employee Details')
+    w2.geometry('500x500')
+    def go():
+        a=int(search.get().strip()) 
+        tree.delete(*tree.get_children())
+        try:
+            result=df[df['id']==a]
+            if not result.empty:
+                new=result.iloc[0].tolist()
+                tree.insert('',END,values=new)
+        except Exception:
+            messagebox.showwarning('Not found','Employee Not found')
+    def clear1():
+        search.delete(0,END)
+        tree.delete(*tree.get_children())
+        for index,row in df.iterrows():
+            tree.insert('',END,values=list(row))
+    tree=ttk.Treeview(w2,columns='columns',show='headings')
+    tree['columns']=(list(df.columns))
+    tree['show']='headings'
+    for col in df.columns:
+        tree.heading(col,text=col)
+        tree.column(col,anchor=CENTER)
+    for index,row in df.iterrows():
+        tree.insert('',END,values=list(row))
+    tree.column('id',width=80)
+    tree.column('age',width=80)
+    tree.column('gender',width=150)
+    my_frame=Frame(w2,bg='lightblue',width=500,height=70)
+    my_frame.pack(side='top',fill='x',padx=0,pady=0)
+    search=Entry(my_frame)
+    search.grid(row=0,column=1,pady=10)
+    s_name=Label(my_frame,text='Search by ID :',bg='red',fg='white')
+    s_name.grid(row=0,column=0,pady=10,padx=10)
+    s_button=Button(my_frame,text='Go',bg='green',fg='white',activebackground='yellow',command=go)
+    s_button.grid(row=0,column=2,padx=10,pady=10)
+    reset=Button(my_frame,text='Reset',bg='blue',fg='white',command=clear1)
+    reset.grid(row=0,column=3,padx=10,pady=10)
+    tree.pack(expand=True,fill='both',padx=0,pady=0)
+root=Tk()
+root.title('Employee Management App')
+root.geometry('400x400')
+root.config(background='lightblue')
+company=Label(root,text='Abbas Software',font=('Times',15),fg='purple',bg='lightblue').pack(pady=5)
+topic=Label(root,text='Employee Management System',width=25,height=1,font=('Times',15,'bold'),bg='lightblue',fg='red').pack(pady=5)
+button1=Button(root,text='Add Employee',bg='green',fg='white',activebackground='turquoise',command=add)
+button1.place(x=150,y=120)
+button2=Button(root,text='View Employee',bg='green',fg='white',activebackground='turquoise',command=view)
+button2.place(x=148,y=160)
+button3=Button(root,text='Search Employee',bg='green',fg='white',activebackground='turquoise',command=view)
+button3.place(x=143,y=200)
+button4=Button(root,text='Update Employee',bg='green',fg='white',activebackground='turquoise',command=view)
+button4.place(x=140,y=240)
+root.mainloop()

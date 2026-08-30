@@ -1,0 +1,51 @@
+from tkinter import *
+from tkinter import messagebox
+root=Tk()
+root.title('Form')
+root.geometry('250x250')
+root.resizable(False,False)
+intro=Label(root,text='Company Joining form',fg='blue',bg='yellow',font=('Arial,10'))
+intro.grid(row=0,column=0,columnspan=2)
+name=Label(root,text='Name:',fg='blue')
+name.grid(row=1,column=0)
+age=Label(root,text='age:',fg='blue')
+age.grid(row=2,column=0)
+qualification=Label(root,text='Qualification:',fg='blue')
+qualification.grid(row=3,column=0)
+phone=Label(root,text='phone:',fg='blue')
+phone.grid(row=4,column=0,padx=10,pady=10)
+name_e=Entry(root,width=20)
+name_e.grid(row=1,column=1,padx=10,pady=10)
+age_e=Entry(root,width=20)
+age_e.grid(row=2,column=1,padx=10,pady=10)
+phone_e=Entry(root,width=20)
+phone_e.grid(row=4,column=1,padx=10,pady=10)
+qualification_e=Entry(root,width=20)
+qualification_e.grid(row=3,column=1,padx=10,pady=10)
+def clear():
+    name_e.delete(0,END)
+    age_e.delete(0,END)
+    qualification_e.delete(0,END)
+    phone_e.delete(0,END)
+def save():
+    name=name_e.get()
+    age=age_e.get()
+    qualification=qualification_e.get()
+    phone=phone_e.get()
+    if not (name and age and qualification and phone):
+        messagebox.showerror('Error','All fields are required')
+        return
+    try:
+        with open('applicants.txt','a') as file:
+            file.write(f'Name:{name} \n')
+            file.write(f'Age:{age}\n')
+            file.write(f'Qualification:{qualification} \n')
+            file.write(f'Phone:{phone} \n')
+            file.write('-'*20+'\n')
+            messagebox.showinfo('Success','Information saved successfully!')
+            clear()
+    except Exception as e:
+        messagebox.showerror('Error',f'failed to save data:{e}')
+submit=Button(root,text='submit',fg='blue',activebackground='green',command=save)
+submit.place(x=100,y=195)
+root.mainloop()

@@ -1,0 +1,18 @@
+ name : abbas 
+ age : 17 
+ qualification : 12 th grade 
+ experience : no experience 
+ exjob : no company 
+ ---Next staff---
+ name : Ravi  
+ age : 22 
+ qualification : no qualification 
+ experience : no experience 
+ exjob : no companies 
+ 
+name : Ram 
+ age : 34 
+ qualification : no 
+ experience : no 
+ exjob : no 
+ 

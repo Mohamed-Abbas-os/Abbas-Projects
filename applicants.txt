@@ -1,0 +1,15 @@
+Name:Ravi 
+Age:18
+Qualification:12th grade 
+Phone:0123456789 
+--------------------
+Name:John 
+Age:25
+Qualification:data scientist 
+Phone:1234567890 
+--------------------
+Name:Tom 
+Age:25
+Qualification:data scientist 
+Phone:1234567890 
+--------------------
